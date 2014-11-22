@@ -84,10 +84,10 @@ void World::step()
 //    cannonBall->getRigidBody()->getMotionState()->getWorldTransform(trans);
 //    std::cout << "sphere height: " << trans.getOrigin().getY() << std::endl;
 
-    projectileMatrix = new btScalar[15];
-    targetMatrix = new btScalar[15];
-    cannonBall->getOpenGLMatrix(projectileMatrix);
-    box->getOpenGLMatrix(targetMatrix);
+//    projectileMatrix = new btScalar[15];
+//    targetMatrix = new btScalar[15];
+//    cannonBall->getOpenGLMatrix(projectileMatrix);
+//    box->getOpenGLMatrix(targetMatrix);
 
 }
 
