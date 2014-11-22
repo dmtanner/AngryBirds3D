@@ -6,9 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>612</width>
+    <width>588</width>
     <height>460</height>
    </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+    <horstretch>100</horstretch>
+    <verstretch>100</verstretch>
+   </sizepolicy>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
@@ -17,11 +23,17 @@
    <widget class="Widget" name="widget" native="true">
     <property name="geometry">
      <rect>
-      <x>9</x>
-      <y>-1</y>
-      <width>541</width>
-      <height>401</height>
+      <x>10</x>
+      <y>-10</y>
+      <width>561</width>
+      <height>391</height>
      </rect>
+    </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+      <horstretch>100</horstretch>
+      <verstretch>100</verstretch>
+     </sizepolicy>
     </property>
    </widget>
   </widget>
@@ -30,7 +42,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>612</width>
+     <width>588</width>
      <height>25</height>
     </rect>
    </property>
