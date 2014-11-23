@@ -2,6 +2,9 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QKeyEvent>
+
+#include "model/world.h"
 
 namespace Ui {
 class MainWindow;
@@ -17,6 +20,11 @@ public:
 
 private:
     Ui::MainWindow *ui;
+    void keyPressEvent(QKeyEvent *e);
+
+    //universal data
+    World* world;
+    int viewRotation;
 };
 
 #endif // MAINWINDOW_H

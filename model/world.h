@@ -25,6 +25,10 @@ public:
     btScalar* getTargetMatrix();
 
     std::vector<Target *> getTargets();
+    std::vector<Projectile *> getProjectiles();
+
+    void incrementCannonAngle(float increment);
+    float getCannonAngle();
 
 private:
     // bullet things
@@ -53,14 +57,15 @@ private:
     float hp;
     float gravity;
     float cannonBallRadius;
+    float cannonAngle;
     std::vector<Target*> targets;
     std::vector<Projectile*> projectiles;
-    Cannon cannon;
+    Cannon cannon;  //unnecessary, just need angle, then just draw cylinder at that angle
     float time_step;
     float max_sub_steps;
     float fixed_time_step;
 
-    int targetCount = 30;
+    static const int targetCount = 30;
 
 
     void createTargets();
