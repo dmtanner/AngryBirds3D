@@ -3,7 +3,6 @@
 Widget::Widget(QWidget *parent) :
     QGLWidget(parent)
 {
-    world = new World();
     startTimer(30);
 }
 
@@ -45,7 +44,7 @@ void Widget::paintGL()
         float xdir = 0.5;
         float zdir = 0.5;
         //modelview.lookAt(QVector3D(0, 0, 0), QVector3D(xdir, 0, zdir), QVector3D(0, 1, 0));
-        modelview.lookAt(QVector3D(10, 10, 10), QVector3D(0, 0, 0), QVector3D(0, 1, 0));
+        modelview.lookAt(QVector3D(5, 5, 5), QVector3D(0, 0, 0), QVector3D(0, 1, 0));
         //drawCylinder();
         drawCannon();
         drawTargets();
@@ -84,7 +83,10 @@ void Widget::pop()
 
 void Widget::drawCannon()
 {
-
+    push();
+        modelview.rotate(world->getCannonAngle(), 1, 0, 0);
+        drawCylinder();
+    pop();
 }
 
 void Widget::drawTargets()

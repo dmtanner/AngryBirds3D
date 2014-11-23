@@ -1,9 +1,11 @@
 #include "world.h"
 
 World::World() {
-    gravity = 10;
+    gravity = 15;
     hp = 100;
     cannonBallRadius = 2.5;
+    cannonAngle = 45;
+
     time_step = 1/60.0;     //amount of time that's passed in the real world
     max_sub_steps = 10;     //max number of internal steps bullet can take each time you call it
     fixed_time_step = 1/60.0;   //amount of time between bullet computations
@@ -62,16 +64,16 @@ void World::initializeBullet()
     //add ground to world
     dynamicsWorld->addRigidBody(groundRigidBody);
 
-    //create new projectile
-    float pMass = 1;
-    float pRadius = 5;
-    btVector3 initLoc(0, 50, 0);
-    btVector3 initInertia(0, 50, 0);
-    cannonBall = new Projectile(pMass, pRadius, initLoc, initInertia);
+//    //create new projectile
+//    float pMass = 1;
+//    float pRadius = 5;
+//    btVector3 initLoc(0, 50, 0);
+//    btVector3 initInertia(0, 50, 0);
+//    cannonBall = new Projectile(pMass, pRadius, initLoc, initInertia);
 
 
-    //add projectile to world
-    dynamicsWorld->addRigidBody(cannonBall->getRigidBody());
+//    //add projectile to world
+//    dynamicsWorld->addRigidBody(cannonBall->getRigidBody());
 
 
 }
@@ -79,16 +81,6 @@ void World::initializeBullet()
 void World::step()
 {
     dynamicsWorld->stepSimulation(time_step, max_sub_steps, fixed_time_step);
-
-//    btTransform trans;
-//    cannonBall->getRigidBody()->getMotionState()->getWorldTransform(trans);
-//    std::cout << "sphere height: " << trans.getOrigin().getY() << std::endl;
-
-//    projectileMatrix = new btScalar[15];
-//    targetMatrix = new btScalar[15];
-//    cannonBall->getOpenGLMatrix(projectileMatrix);
-//    box->getOpenGLMatrix(targetMatrix);
-
 }
 
 btScalar *World::getProjectileMatrix()
@@ -106,6 +98,27 @@ std::vector<Target *> World::getTargets()
     return targets;
 }
 
+std::vector<Projectile *> World::getProjectiles()
+{
+    return projectiles;
+}
+
+void World::incrementCannonAngle(float increment)
+{
+    cannonAngle += increment;
+
+    //make sure cannon is pointed within range
+    if(cannonAngle > 70)
+        cannonAngle = 70;
+    if(cannonAngle < 0)
+        cannonAngle = 0;
+}
+
+float World::getCannonAngle()
+{
+    return cannonAngle;
+}
+
 void World::createTargets()
 {
     //create on 20x20 grid
@@ -119,8 +132,8 @@ void World::createTargets()
         float z = (((float)rand() / RAND_MAX) * range) + lowerBound;
 
         float tMass = 3;
-        btVector3 dimensions(1, 1, 1);
-        btVector3 initLoc(x, 20, z);
+        btVector3 dimensions(0.5, 0.5, 0.5);
+        btVector3 initLoc(x, 0.5, z);
         Target* t = new Target(tMass, dimensions, initLoc);
 
         //add to world

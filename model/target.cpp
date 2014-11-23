@@ -45,9 +45,10 @@ void Target::initializeBullet()
 
     targetShape = new btBoxShape(btVector3(targetDimX, targetDimY, targetDimZ));
 
-    //set ball initial location at 50
+    //set box initial location at 50
     targetMotionState = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(targetLocX, targetLocY, targetLocZ)));
 
+    //set box initial inertia
     btVector3 targetInertia(0, 0, 0);
     targetShape->calculateLocalInertia(targetMass, targetInertia);
 

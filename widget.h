@@ -6,6 +6,8 @@
 #include <QOpenGLShaderProgram>
 #include <QMatrix4x4>
 #include <QOpenGLFunctions>
+#include <QKeyEvent>
+
 #include "model/world.h"
 
 #define PI 3.14159265359
