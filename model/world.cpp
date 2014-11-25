@@ -7,6 +7,11 @@ World::World() {
     cannonAngle = 45;
     viewAngle = 0;
 
+    leftPress = false;
+    rightPress = false;
+    upPress = false;
+    downPress = false;
+
     time_step = 1/60.0;     //amount of time that's passed in the real world
     max_sub_steps = 10;     //max number of internal steps bullet can take each time you call it
     fixed_time_step = 1/60.0;   //amount of time between bullet computations
@@ -60,6 +65,20 @@ void World::initializeBullet()
 void World::step()
 {
     dynamicsWorld->stepSimulation(time_step, max_sub_steps, fixed_time_step);
+
+    if(leftPress) {
+        incrementViewAngle(-0.1);
+    }
+    else if(rightPress) {
+        incrementViewAngle(0.1);
+    }
+
+    if(upPress) {
+        incrementCannonAngle(1);
+    }
+    else if(downPress) {
+        incrementCannonAngle(-1);
+    }
 }
 
 std::vector<Target *> World::getTargets()
@@ -104,14 +123,35 @@ void World::shoot()
     float radius = 0.5;
     float x = cos(viewAngle);
     float z = sin(viewAngle);
-    float y = 1;
-    btVector3 initLoc(0, 0, 0);
+    float y = sin(cannonAngle*PI/180);
+
+    btVector3 initLoc(2*x, 2*y, 2*z);
     Projectile* p = new Projectile(mass, radius, initLoc);
 
     dynamicsWorld->addRigidBody(p->getRigidBody());
     projectiles.push_back(p);
 
-    p->applyImpulse(50*x, 5, 50*z);
+    p->applyImpulse(50*x, 50*y, 50*z);
+}
+
+void World::toggleLeft()
+{
+    leftPress = !leftPress;
+}
+
+void World::toggleRight()
+{
+    rightPress = !rightPress;
+}
+
+void World::toggleUp()
+{
+    upPress = !upPress;
+}
+
+void World::toggleDown()
+{
+    downPress = !downPress;
 }
 
 void World::createTargets()
@@ -134,6 +174,12 @@ void World::createTargets()
         //add to world
         dynamicsWorld->addRigidBody(t->getRigidBody());
         targets.push_back(t);
+
+        //add one on top
+        btVector3 initLoc2(x, 1.5, z);
+        Target* t2 = new Target(tMass, dimensions, initLoc2);
+        dynamicsWorld->addRigidBody(t2->getRigidBody());
+        targets.push_back(t2);
     }
 
 }

@@ -51,7 +51,6 @@ void Projectile::initializeBullet()
     projectileRigidBody = new btRigidBody(projectileRigidBodyCI);
 
     projectileRigidBody->activate(true);
-    projectileRigidBody->applyCentralImpulse(btVector3(1, 10, 3));
 
 }
 
@@ -68,7 +67,6 @@ void Projectile::getOpenGLMatrix(btScalar *m)
 
 void Projectile::applyImpulse(float x, float y, float z)
 {
-    projectileRigidBody->activate(true);
     projectileRigidBody->applyCentralImpulse(btVector3(x, y, z));
 }
 

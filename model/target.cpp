@@ -56,7 +56,6 @@ void Target::initializeBullet()
     targetRigidBody = new btRigidBody(targetRigidBodyCI);
 
     targetRigidBody->activate(true);
-    targetRigidBody->applyCentralImpulse(btVector3(0, 10, 0));
 
 }
 

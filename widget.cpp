@@ -43,7 +43,7 @@ void Widget::paintGL()
         //change with user input
         float xdir = cos(world->getViewAngle());
         float zdir = sin(world->getViewAngle());
-        modelview.lookAt(QVector3D(0, 2, 0), QVector3D(xdir, 1  , zdir), QVector3D(0, 1, 0));
+        modelview.lookAt(QVector3D(0, 3, 0), QVector3D(xdir, 2.5  , zdir), QVector3D(0, 1, 0));
         drawCannon();
         drawTargets();
         drawProjectiles();
@@ -82,7 +82,7 @@ void Widget::pop()
 void Widget::drawCannon()
 {
     push();
-        modelview.translate(2*cos(world->getViewAngle()), 0, 2*sin(world->getViewAngle()));
+        //modelview.translate(cos(world->getViewAngle()), 0, sin(world->getViewAngle()));
         modelview.rotate(90, 0, 1, 0);
         modelview.rotate((90 - world->getCannonAngle()), cos(world->getViewAngle()), 0, sin(world->getViewAngle()));
         modelview.scale(0.5, 2, 0.5);
