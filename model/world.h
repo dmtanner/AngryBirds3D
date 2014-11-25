@@ -21,14 +21,16 @@ public:
 
     void initializeBullet();
     void step();
-    btScalar* getProjectileMatrix();
-    btScalar* getTargetMatrix();
 
     std::vector<Target *> getTargets();
     std::vector<Projectile *> getProjectiles();
 
     void incrementCannonAngle(float increment);
     float getCannonAngle();
+    void incrementViewAngle(float increment);
+    float getViewAngle();
+
+    void shoot();
 
 private:
     // bullet things
@@ -45,19 +47,14 @@ private:
 
     btRigidBody* groundRigidBody;
 
-    btScalar *projectileMatrix;
-    btScalar *targetMatrix;
-
-    //my objects
-    Projectile* cannonBall;
-    Target* box;
-
 
     //non-bullet things
     float hp;
     float gravity;
     float cannonBallRadius;
     float cannonAngle;
+    float viewAngle;
+
     std::vector<Target*> targets;
     std::vector<Projectile*> projectiles;
     Cannon cannon;  //unnecessary, just need angle, then just draw cylinder at that angle

@@ -8,12 +8,13 @@ class Projectile {
 
 public:
     Projectile();
-    Projectile(float mass, float radius, btVector3 initLoc, btVector3 initInertia);
+    Projectile(float mass, float radius, btVector3 initLoc);
     ~Projectile();
 
     void initializeBullet();
     btRigidBody* getRigidBody();
     void getOpenGLMatrix(btScalar *m);
+    void applyImpulse(float x, float y, float z);
 
 private:
 
@@ -31,10 +32,6 @@ private:
     float projectileLocX;   //initial location
     float projectileLocY;
     float projectileLocZ;
-
-    float projectileInertiaX;
-    float projectileInertiaY;
-    float projectileInertiaZ;
 
 };
 

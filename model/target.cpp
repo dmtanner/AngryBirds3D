@@ -49,11 +49,14 @@ void Target::initializeBullet()
     targetMotionState = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(targetLocX, targetLocY, targetLocZ)));
 
     //set box initial inertia
-    btVector3 targetInertia(0, 0, 0);
+    btVector3 targetInertia;
     targetShape->calculateLocalInertia(targetMass, targetInertia);
 
     btRigidBody::btRigidBodyConstructionInfo targetRigidBodyCI(targetMass, targetMotionState, targetShape, targetInertia);
     targetRigidBody = new btRigidBody(targetRigidBodyCI);
+
+    targetRigidBody->activate(true);
+    targetRigidBody->applyCentralImpulse(btVector3(0, 10, 0));
 
 }
 
