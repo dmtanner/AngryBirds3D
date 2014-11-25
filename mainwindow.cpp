@@ -23,30 +23,24 @@ void MainWindow::keyPressEvent(QKeyEvent *e)
 {
     switch (e->key())
     {
-       case Qt::Key_Left:  /*  Escape Key */
-            std::cout << "left" << std::endl;
-          //degrees += 2;
-          break;
-       case Qt::Key_Right: // reset physics to time 0
-       {
-        //degrees -= 2;
-         break;
-       }
-    case Qt::Key_Up:
-    {
-        world->incrementCannonAngle(1);
-        break;
-    }
-    case Qt::Key_Down:
-    {
-        world->incrementCannonAngle(-1);
-        break;
-    }
-    case Qt::Key_Escape:
-        {
+        case Qt::Key_Left:
+            world->incrementViewAngle(-.1);
+            break;
+        case Qt::Key_Right:
+            world->incrementViewAngle(.1);
+            break;
+        case Qt::Key_Up:
+            world->incrementCannonAngle(1);
+            break;
+        case Qt::Key_Down:
+            world->incrementCannonAngle(-1);
+            break;
+        case Qt::Key_Space:
+            world->shoot();
+            break;
+        case Qt::Key_Escape:
             exit(0);
             break;
-        }
 
        default:
           break;

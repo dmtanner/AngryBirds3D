@@ -13,7 +13,7 @@ Projectile::Projectile(){
 
 }
 
-Projectile::Projectile(float mass, float radius, btVector3 initLoc, btVector3 initInertia)
+Projectile::Projectile(float mass, float radius, btVector3 initLoc)
 {
     projectileMass = mass;
     projectileRadius = radius;
@@ -21,10 +21,6 @@ Projectile::Projectile(float mass, float radius, btVector3 initLoc, btVector3 in
     projectileLocX = initLoc.getX();
     projectileLocY = initLoc.getY();
     projectileLocZ = initLoc.getZ();
-
-    projectileInertiaX = initInertia.getX();
-    projectileInertiaY = initInertia.getY();
-    projectileInertiaZ = initInertia.getZ();
 
     initializeBullet();
 
@@ -41,19 +37,21 @@ Projectile::~Projectile()
 
 void Projectile::initializeBullet()
 {
-
+    //create sphere with radius
     projectileShape = new btSphereShape(projectileRadius);
 
-    //set ball initial location at 50
+    //set ball initial location
     projectileMotionState = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(projectileLocX, projectileLocY, projectileLocZ)));
 
-    btVector3 projectileInertia(projectileInertiaX, projectileInertiaY, projectileInertiaZ);
+    //initialize everything
+    btVector3 projectileInertia;
     projectileShape->calculateLocalInertia(projectileMass, projectileInertia);
-
-    projectileMass = 1;
 
     btRigidBody::btRigidBodyConstructionInfo projectileRigidBodyCI(projectileMass, projectileMotionState, projectileShape, projectileInertia);
     projectileRigidBody = new btRigidBody(projectileRigidBodyCI);
+
+    projectileRigidBody->activate(true);
+    projectileRigidBody->applyCentralImpulse(btVector3(1, 10, 3));
 
 }
 
@@ -66,5 +64,11 @@ void Projectile::getOpenGLMatrix(btScalar *m)
 {
     btTransform trans = projectileRigidBody->getWorldTransform();
     trans.getOpenGLMatrix(m);
+}
+
+void Projectile::applyImpulse(float x, float y, float z)
+{
+    projectileRigidBody->activate(true);
+    projectileRigidBody->applyCentralImpulse(btVector3(x, y, z));
 }
 

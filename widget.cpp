@@ -41,11 +41,9 @@ void Widget::paintGL()
 
     push();
         //change with user input
-        float xdir = 0.5;
-        float zdir = 0.5;
-        //modelview.lookAt(QVector3D(0, 0, 0), QVector3D(xdir, 0, zdir), QVector3D(0, 1, 0));
-        modelview.lookAt(QVector3D(5, 5, 5), QVector3D(0, 0, 0), QVector3D(0, 1, 0));
-        //drawCylinder();
+        float xdir = cos(world->getViewAngle());
+        float zdir = sin(world->getViewAngle());
+        modelview.lookAt(QVector3D(0, 2, 0), QVector3D(xdir, 1  , zdir), QVector3D(0, 1, 0));
         drawCannon();
         drawTargets();
         drawProjectiles();
@@ -84,7 +82,11 @@ void Widget::pop()
 void Widget::drawCannon()
 {
     push();
-        modelview.rotate(world->getCannonAngle(), 1, 0, 0);
+        modelview.translate(2*cos(world->getViewAngle()), 0, 2*sin(world->getViewAngle()));
+        modelview.rotate(90, 0, 1, 0);
+        modelview.rotate((90 - world->getCannonAngle()), cos(world->getViewAngle()), 0, sin(world->getViewAngle()));
+        modelview.scale(0.5, 2, 0.5);
+        modelview.translate(0, 0.5, 0);
         drawCylinder();
     pop();
 }
@@ -108,7 +110,18 @@ void Widget::drawTargets()
 
 void Widget::drawProjectiles()
 {
+    std::vector<Projectile*> projectiles = world->getProjectiles();
+    for(std::vector<Projectile*>::iterator it = projectiles.begin(); it != projectiles.end(); it++) {
+        Projectile* p = *it;
+        btScalar* projectileMatrix = new btScalar[16];
+        p->getOpenGLMatrix(projectileMatrix);
+        push();
+            modelview = modelview * QMatrix4x4((GLfloat*)projectileMatrix).transposed();
+            drawSphere();
+        pop();
 
+        delete projectileMatrix;
+    }
 }
 
 
