@@ -7,10 +7,11 @@
 #include <vector>
 #include <iostream>
 #include "target.h"
-#include "cannon.h"
 #include "projectile.h"
 #include <sstream>
 #include <cstdlib>
+
+#define PI 3.14159265359
 
 
 class World
@@ -31,6 +32,12 @@ public:
     float getViewAngle();
 
     void shoot();
+
+    void toggleLeft();
+    void toggleRight();
+    void toggleUp();
+    void toggleDown();
+
 
 private:
     // bullet things
@@ -55,9 +62,15 @@ private:
     float cannonAngle;
     float viewAngle;
 
+    btVector3 viewLocation = btVector3(0, 5, 0);    //unused yet
+
+    bool leftPress;
+    bool rightPress;
+    bool upPress;
+    bool downPress;
+
     std::vector<Target*> targets;
     std::vector<Projectile*> projectiles;
-    Cannon cannon;  //unnecessary, just need angle, then just draw cylinder at that angle
     float time_step;
     float max_sub_steps;
     float fixed_time_step;

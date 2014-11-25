@@ -15,7 +15,6 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     widget.cpp \
-    model/cannon.cpp \
     model/projectile.cpp \
     model/target.cpp \
     model/world.cpp \
@@ -23,7 +22,6 @@ SOURCES += main.cpp\
 
 HEADERS  += mainwindow.h \
     widget.h \
-    model/cannon.h \
     model/projectile.h \
     model/target.h \
     model/world.h

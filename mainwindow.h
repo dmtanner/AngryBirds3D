@@ -21,6 +21,7 @@ public:
 private:
     Ui::MainWindow *ui;
     void keyPressEvent(QKeyEvent *e);
+    void keyReleaseEvent(QKeyEvent *e);
 
     //universal data
     World* world;
