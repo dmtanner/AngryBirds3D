@@ -36,11 +36,16 @@ void Widget::initializeBuffers()
 
 /*-----------------------------Drawing Functions-----------------------------------*/
 
-void Widget::drawSquare()
+void Widget::drawSquare(QVector3D color)
 {
+    glDisableVertexAttribArray(colorAttribute);
+    glVertexAttrib3f(colorAttribute, color.x(), color.y(), color.z());
+
     bindTriangleAttributes();
     program.setUniformValue(pvmMatrixUniform, projection * modelview);
     glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
+
+    glEnableVertexAttribArray(colorAttribute);
 }
 
 void Widget::drawCircle()
@@ -50,20 +55,20 @@ void Widget::drawCircle()
     glDrawArrays(GL_TRIANGLE_FAN, 0, SLICES + 2);
 }
 
-void Widget::drawCube()
+void Widget::drawCube(QVector3D color)
 {
     push();
-        drawSquare();
+        drawSquare(color);
         modelview.rotate( 90, 0, 1, 0);
-        drawSquare();
+        drawSquare(color);
         modelview.rotate( 90, 0, 1, 0);
-        drawSquare();
+        drawSquare(color);
         modelview.rotate( 90, 0, 1, 0);
-        drawSquare();
+        drawSquare(color);
         modelview.rotate( 90, 1, 0, 0);
-        drawSquare();
+        drawSquare(color);
         modelview.rotate( 180, 1, 0, 0);
-        drawSquare();
+        drawSquare(color);
     pop();
 }
 
@@ -129,6 +134,7 @@ void Widget::bindTriangleAttributes()
     // Do the same thing for the color and normal buffers
     glBindBuffer(GL_ARRAY_BUFFER, colorBuffer);
     glVertexAttribPointer(colorAttribute, 3, GL_FLOAT, GL_FALSE, 0, 0);
+
 
     glBindBuffer(GL_ARRAY_BUFFER, normBuffer);
     glVertexAttribPointer(normAttribute, 3, GL_FLOAT, GL_FALSE, 0, 0);
@@ -398,7 +404,7 @@ void Widget::initializeSphere()
             float y = sin(phi) * sin(theta) * radius;
 
             positionData.push_back(QVector3D(x, y, z));
-            colorData.push_back(blue);
+            colorData.push_back(red);
             normData.push_back(QVector3D(x, y, z));
         }
     }

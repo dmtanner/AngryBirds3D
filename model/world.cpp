@@ -1,11 +1,13 @@
 #include "world.h"
 
 World::World() {
-    gravity = 15;
+    score = 0;
+    gravity = 25;
     hp = 100;
     cannonBallRadius = 2.5;
     cannonAngle = 45;
     viewAngle = 0;
+    turnSpeed = 3.5;
 
     leftPress = false;
     rightPress = false;
@@ -66,11 +68,13 @@ void World::step()
 {
     dynamicsWorld->stepSimulation(time_step, max_sub_steps, fixed_time_step);
 
+    score += 1;
+
     if(leftPress) {
-        incrementViewAngle(-0.1);
+        incrementViewAngle(-0.01*turnSpeed);
     }
     else if(rightPress) {
-        incrementViewAngle(0.1);
+        incrementViewAngle(0.01*turnSpeed);
     }
 
     if(upPress) {
@@ -79,6 +83,11 @@ void World::step()
     else if(downPress) {
         incrementCannonAngle(-1);
     }
+}
+
+int World::getScore()
+{
+    return score;
 }
 
 std::vector<Target *> World::getTargets()
@@ -166,6 +175,9 @@ void World::createTargets()
         float x = (((float)rand() / RAND_MAX) * range) + lowerBound;
         float z = (((float)rand() / RAND_MAX) * range) + lowerBound;
 
+        x = targetCount*cos(2*3.14159*i/targetCount);
+        z = targetCount*sin(2*3.14159*i/targetCount);
+
         float tMass = 3;
         btVector3 dimensions(0.5, 0.5, 0.5);
         btVector3 initLoc(x, 0.5, z);
@@ -176,10 +188,12 @@ void World::createTargets()
         targets.push_back(t);
 
         //add one on top
-        btVector3 initLoc2(x, 1.5, z);
-        Target* t2 = new Target(tMass, dimensions, initLoc2);
-        dynamicsWorld->addRigidBody(t2->getRigidBody());
-        targets.push_back(t2);
+        for(int j = 0; j < 5; j++) {
+            btVector3 initLoc2(x, j + 1.5, z);
+            Target* t2 = new Target(tMass, dimensions, initLoc2);
+            dynamicsWorld->addRigidBody(t2->getRigidBody());
+            targets.push_back(t2);
+        }
     }
 
 }

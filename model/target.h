@@ -2,6 +2,9 @@
 #define TARGET_H
 
 #include <btBulletDynamicsCommon.h>
+#include <QVector3D>
+#include <cstdlib>
+#include <iostream>
 
 class Target {
 
@@ -13,6 +16,8 @@ public:
     void initializeBullet();
     btRigidBody* getRigidBody();
     void getOpenGLMatrix(btScalar *m);
+
+    QVector3D getColor();
 
 private:
 
@@ -29,6 +34,8 @@ private:
     float targetDimY;
     float targetDimZ;
     btScalar targetMass;    //mass
+
+    QVector3D color;
 
 };
 

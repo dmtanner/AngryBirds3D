@@ -13,11 +13,11 @@ varying vec3 vNorm;
 void main(void)
 {
 
-	vec3 lightPosition = vec3(1, 1, 0);
+	vec3 lightPosition = vec3(0, 0, -1);
 	float light = dot(normalize(vNorm), normalize(lightPosition));
 	light = light / 2.0 + 0.5;
 
-	vec3 shadowColor = vec3(0.2, 0.2, 0.2);
+	vec3 shadowColor = vec3(0.0, 0.0, 0.0);
 	vec3 finalColor = mix(shadowColor, vColor, light);
 
 	// This is the only output of the fragment shader.

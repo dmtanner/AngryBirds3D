@@ -10,6 +10,11 @@
     <height>500</height>
    </rect>
   </property>
+  <property name="font">
+   <font>
+    <pointsize>15</pointsize>
+   </font>
+  </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
@@ -20,6 +25,19 @@
       <property name="autoFillBackground">
        <bool>false</bool>
       </property>
+      <widget class="QLabel" name="scoreLabel">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>0</y>
+         <width>131</width>
+         <height>18</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Score: 0</string>
+       </property>
+      </widget>
      </widget>
     </item>
    </layout>
@@ -30,7 +48,7 @@
      <x>0</x>
      <y>0</y>
      <width>500</width>
-     <height>25</height>
+     <height>32</height>
     </rect>
    </property>
   </widget>

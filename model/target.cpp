@@ -12,6 +12,8 @@ Target::Target() {
     targetLocY = 0;
     targetLocZ = 0;
 
+    color = QVector3D(rand()/(float)RAND_MAX,rand()/(float)RAND_MAX,rand()/(float)RAND_MAX);
+
     initializeBullet();
 
 }
@@ -27,6 +29,8 @@ Target::Target(float mass, btVector3 dimensions, btVector3 initLoc)
     targetLocX = initLoc.getX();
     targetLocY = initLoc.getY();
     targetLocZ = initLoc.getZ();
+
+    color = QVector3D(rand()/(float)RAND_MAX,rand()/(float)RAND_MAX,rand()/(float)RAND_MAX);
 
     initializeBullet();
 }
@@ -68,6 +72,11 @@ void Target::getOpenGLMatrix(btScalar *m)
 {
     btTransform trans = targetRigidBody->getWorldTransform();
     trans.getOpenGLMatrix(m);
+}
+
+QVector3D Target::getColor()
+{
+    return color;
 }
 
 

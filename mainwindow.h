@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QKeyEvent>
+#include <sstream>
 
 #include "model/world.h"
 
@@ -22,6 +23,8 @@ private:
     Ui::MainWindow *ui;
     void keyPressEvent(QKeyEvent *e);
     void keyReleaseEvent(QKeyEvent *e);
+    void timerEvent(QTimerEvent *);
+    bool spacePressed;
 
     //universal data
     World* world;
