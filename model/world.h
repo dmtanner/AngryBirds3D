@@ -22,6 +22,7 @@ public:
 
     void initializeBullet();
     void step();
+    int getScore();
 
     std::vector<Target *> getTargets();
     std::vector<Projectile *> getProjectiles();
@@ -56,11 +57,13 @@ private:
 
 
     //non-bullet things
+    int score;
     float hp;
     float gravity;
     float cannonBallRadius;
     float cannonAngle;
     float viewAngle;
+    float turnSpeed;
 
     btVector3 viewLocation = btVector3(0, 5, 0);    //unused yet
 

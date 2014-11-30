@@ -100,7 +100,7 @@ void Widget::drawTargets()
         t->getOpenGLMatrix(targetMatrix);
         push();
             modelview = modelview * QMatrix4x4((GLfloat*)targetMatrix).transposed();
-            drawCube();
+            drawCube(t->getColor());
         pop();
 
         delete targetMatrix;

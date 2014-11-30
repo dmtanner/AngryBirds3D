@@ -90,10 +90,10 @@ private:
     //2D primitives
     void drawTriangle();
     void drawCircle();
-    void drawSquare();
+    void drawSquare(QVector3D color);
 
     //3D primitives
-    void drawCube();
+    void drawCube(QVector3D color);
     void drawCone();
     void drawCylinder();
     void drawSphere();
