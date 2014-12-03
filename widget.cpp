@@ -78,7 +78,12 @@ void Widget::pop()
 void Widget::drawCannon()
 {
     push();
-        //modelview.translate(cos(world->getViewAngle()), 0, sin(world->getViewAngle()));
+        //draw cannon swivel ball
+        modelview.scale(2.5, 2.5, 2.5);
+        drawSphere();
+    pop();
+    push();
+        //set cannon at appropriate angle
         modelview.rotate(90, 0, 1, 0);
         modelview.rotate((90 - world->getCannonAngle()), cos(world->getViewAngle()), 0, sin(world->getViewAngle()));
         modelview.scale(0.5, 2, 0.5);
