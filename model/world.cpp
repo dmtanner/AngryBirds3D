@@ -149,14 +149,13 @@ void World::shoot()
     float mass = 3;
     float radius = 0.5;
 
-    //coordinates at end of cannon
-    float x = cos(viewAngle);
-    float z = sin(viewAngle);
+    //coordinates at end of cannon - similar to sphere coordinates algorithm
+    float x = cos(viewAngle) * cos(cannonAngle*PI/180);
+    float z = sin(viewAngle) * cos(cannonAngle*PI/180);
     float y = sin(cannonAngle*PI/180);
 
-    btVector3 initLoc(2*x, 2*y, 2*z);
-    initLoc.normalize();
-    initLoc *= 2;
+    btVector3 initLoc(x, y, z);
+    initLoc = 2.2 * initLoc;
     Projectile* p = new Projectile(mass, radius, initLoc);
 
     dynamicsWorld->addRigidBody(p->getRigidBody());
