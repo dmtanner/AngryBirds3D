@@ -7,6 +7,7 @@
 #include <QMatrix4x4>
 #include <QOpenGLFunctions>
 #include <QKeyEvent>
+#include <iostream>
 
 #include "model/world.h"
 
@@ -47,9 +48,8 @@ private:
     void drawCannon();
     void drawTargets();
     void drawProjectiles();
+    void drawGround();
     float randomNum(int lowerBound, int upperBound);
-
-    virtual void timerEvent(QTimerEvent *);
 
 
     /*-------OpenGL Object Data--------*/
@@ -116,6 +116,7 @@ private:
     void bindConeAttributes();
     void bindCylinderAttributes();
     void bindSphereAttributes();
+
 
 signals:
 

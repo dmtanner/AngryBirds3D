@@ -25,6 +25,7 @@ private:
     void keyReleaseEvent(QKeyEvent *e);
     void timerEvent(QTimerEvent *);
     bool spacePressed;
+    int shootTimer;
 
     //universal data
     World* world;
