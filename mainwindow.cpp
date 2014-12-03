@@ -8,16 +8,19 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     world = new World();
     spacePressed = false;
+    shootTimer = 0;
 
     ui->setupUi(this);
     ui->widget->addWorld(world);
-    startTimer(30);
+    startTimer(20);
+
 
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+    delete world;
 }
 
 
@@ -39,7 +42,7 @@ void MainWindow::keyPressEvent(QKeyEvent *e)
             break;
         case Qt::Key_Space:
             if(!spacePressed) {
-                world->shoot();
+                //world->shoot();
             }
             spacePressed = true;
             break;
@@ -81,10 +84,21 @@ void MainWindow::keyReleaseEvent(QKeyEvent *e)
 
 void MainWindow::timerEvent(QTimerEvent *)
 {
+    //Display Score
     std::stringstream score;
     score << "Score: " << world->getScore();
     QString qscore = QString::fromStdString(score.str());
-    ui->scoreLabel->clear();
-    ui->scoreLabel->repaint();
     ui->scoreLabel->setText(qscore);
+
+    //shoot
+    if(spacePressed && shootTimer > 15) {
+        world->shoot();
+        shootTimer = 0;
+    }
+    shootTimer += 1;
+
+    //Update model and view
+    world->step();
+    ui->widget->updateGL();
+
 }

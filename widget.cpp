@@ -3,7 +3,7 @@
 Widget::Widget(QWidget *parent) :
     QGLWidget(parent)
 {
-    startTimer(30);
+
 }
 
 Widget::~Widget()
@@ -32,7 +32,7 @@ void Widget::initializeGL()
 
     glEnable(GL_DEPTH_TEST);
 
-    glClearColor(0.0, 0.0, 0.0, 1.0);
+    glClearColor(0.53, 0.81, 0.98, 0.0);
 }
 
 void Widget::paintGL()
@@ -40,10 +40,12 @@ void Widget::paintGL()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     push();
-        //change with user input
+        //change view with user input
         float xdir = cos(world->getViewAngle());
         float zdir = sin(world->getViewAngle());
         modelview.lookAt(QVector3D(0, 3, 0), QVector3D(xdir, 2.5  , zdir), QVector3D(0, 1, 0));
+
+        drawGround();
         drawCannon();
         drawTargets();
         drawProjectiles();
@@ -60,12 +62,6 @@ void Widget::resizeGL(int w, int h)
 void Widget::addWorld(World *w)
 {
     world = w;
-}
-
-void Widget::timerEvent(QTimerEvent *)
-{
-    world->step();
-    updateGL();
 }
 
 void Widget::push()
@@ -122,6 +118,15 @@ void Widget::drawProjectiles()
 
         delete projectileMatrix;
     }
+}
+
+void Widget::drawGround()
+{
+    push();
+        modelview.scale(1000.0, 0.0001, 1000.0);
+        modelview.rotate(90, 1.0, 0.0, 0.0);
+        drawSquare(world->getGroundColor());
+    pop();
 }
 
 

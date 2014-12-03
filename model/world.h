@@ -20,7 +20,6 @@ public:
     World();
     ~World();
 
-    void initializeBullet();
     void step();
     int getScore();
 
@@ -31,6 +30,7 @@ public:
     float getCannonAngle();
     void incrementViewAngle(float increment);
     float getViewAngle();
+    QVector3D getGroundColor();
 
     void shoot();
 
@@ -41,22 +41,27 @@ public:
 
 
 private:
-    // bullet things
+
+    /*---------bullet things---------*/
+    void initializeBullet();
+
     btBroadphaseInterface* broadphase;
     btDefaultCollisionConfiguration* collisionConfig;
     btCollisionDispatcher* collisionDispatcher;
     btSequentialImpulseConstraintSolver* solver;
 
     btDiscreteDynamicsWorld* dynamicsWorld;
-
     btCollisionShape* groundShape;
-
     btDefaultMotionState* groundMotionState;
-
     btRigidBody* groundRigidBody;
 
+    /*------------my bullet things----------*/
+    float time_step;
+    float max_sub_steps;
+    float fixed_time_step;
 
-    //non-bullet things
+
+    /*-------------non-bullet things-------*/
     int score;
     float hp;
     float gravity;
@@ -67,6 +72,10 @@ private:
 
     btVector3 viewLocation = btVector3(0, 5, 0);    //unused yet
 
+    QVector3D groundColor = QVector3D(0.2, 0.7, 0.1);
+
+
+    /*--------------user input control------------*/
     bool leftPress;
     bool rightPress;
     bool upPress;
@@ -74,15 +83,13 @@ private:
 
     std::vector<Target*> targets;
     std::vector<Projectile*> projectiles;
-    float time_step;
-    float max_sub_steps;
-    float fixed_time_step;
+
 
     static const int targetCount = 30;
+    static const int MAX_PROJECTILES = 100;
 
 
     void createTargets();
-    void addRigidBody();
 
 };
 
