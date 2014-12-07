@@ -36,16 +36,11 @@ void Widget::initializeBuffers()
 
 /*-----------------------------Drawing Functions-----------------------------------*/
 
-void Widget::drawSquare(QVector3D color)
+void Widget::drawSquare()
 {
-    glDisableVertexAttribArray(colorAttribute);
-    glVertexAttrib3f(colorAttribute, color.x(), color.y(), color.z());
-
     bindTriangleAttributes();
     program.setUniformValue(pvmMatrixUniform, projection * modelview);
     glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
-
-    glEnableVertexAttribArray(colorAttribute);
 }
 
 void Widget::drawCircle()
@@ -57,23 +52,34 @@ void Widget::drawCircle()
 
 void Widget::drawCube(QVector3D color)
 {
+    //draw input color
+    glDisableVertexAttribArray(colorAttribute);
+    glVertexAttrib3f(colorAttribute, color.x(), color.y(), color.z());
+
     push();
-        drawSquare(color);
+        drawSquare();
         modelview.rotate( 90, 0, 1, 0);
-        drawSquare(color);
+        drawSquare();
         modelview.rotate( 90, 0, 1, 0);
-        drawSquare(color);
+        drawSquare();
         modelview.rotate( 90, 0, 1, 0);
-        drawSquare(color);
+        drawSquare();
         modelview.rotate( 90, 1, 0, 0);
-        drawSquare(color);
+        drawSquare();
         modelview.rotate( 180, 1, 0, 0);
-        drawSquare(color);
+        drawSquare();
     pop();
+
+    //re-enable color
+    glEnableVertexAttribArray(colorAttribute);
 }
 
-void Widget::drawCone()
+void Widget::drawCone(QVector3D color)
 {
+    //draw input color
+    glDisableVertexAttribArray(colorAttribute);
+    glVertexAttrib3f(colorAttribute, color.x(), color.y(), color.z());
+
     push();
         //draw top part of cone
         bindConeAttributes();
@@ -86,10 +92,17 @@ void Widget::drawCone()
         drawCircle();
         pop();
     pop();
+
+    //re-enable color attribute
+    glEnableVertexAttribArray(colorAttribute);
 }
 
-void Widget::drawCylinder()
+void Widget::drawCylinder(QVector3D color)
 {
+    //draw input color
+    glDisableVertexAttribArray(colorAttribute);
+    glVertexAttrib3f(colorAttribute, color.x(), color.y(), color.z());
+
     //draw sides of cylinder
     bindCylinderAttributes();
     program.setUniformValue(pvmMatrixUniform, projection * modelview);
@@ -103,13 +116,23 @@ void Widget::drawCylinder()
         modelview.rotate(180, 1, 0, 0);
         drawCircle();
     pop();
+
+    //re-enable color attribute
+    glEnableVertexAttribArray(colorAttribute);
 }
 
-void Widget::drawSphere()
+void Widget::drawSphere(QVector3D color)
 {
+    //draw with input color
+    glDisableVertexAttribArray(colorAttribute);
+    glVertexAttrib3f(colorAttribute, color.x(), color.y(), color.z());
+
     bindSphereAttributes();
     program.setUniformValue(pvmMatrixUniform, projection * modelview);
     glDrawElements(GL_TRIANGLES, indexSize, GL_UNSIGNED_INT, 0);
+
+    //re-enable color attribute
+    glEnableVertexAttribArray(colorAttribute);
 }
 
 

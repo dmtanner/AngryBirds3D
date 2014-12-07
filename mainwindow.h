@@ -19,6 +19,9 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+private slots:
+    void on_cannonPowerSlider_valueChanged(int value);
+
 private:
     Ui::MainWindow *ui;
     void keyPressEvent(QKeyEvent *e);

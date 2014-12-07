@@ -43,7 +43,7 @@ void Widget::paintGL()
         //change view with user input
         float xdir = cos(world->getViewAngle());
         float zdir = sin(world->getViewAngle());
-        modelview.lookAt(QVector3D(0, 3, 0), QVector3D(xdir, 2.5  , zdir), QVector3D(0, 1, 0));
+        modelview.lookAt(QVector3D(0, 1.7, 0), QVector3D(xdir, 1.7, zdir), QVector3D(0, 1, 0));
 
         drawGround();
         drawCannon();
@@ -56,7 +56,7 @@ void Widget::resizeGL(int w, int h)
 {
     glViewport(0, 0, w, h);
     projection.setToIdentity();
-    projection.perspective(90, w/(float)h, 0.1, 100);
+    projection.perspective(70, w/(float)h, 0.1, 100);
 }
 
 void Widget::addWorld(World *w)
@@ -77,10 +77,11 @@ void Widget::pop()
 
 void Widget::drawCannon()
 {
+    QVector3D black = QVector3D(0.1, 0.0, 0.2);
     push();
         //draw cannon swivel ball
         modelview.scale(2.5, 2.5, 2.5);
-        drawSphere();
+        drawSphere(black);
     pop();
     push();
         //set cannon at appropriate angle
@@ -88,7 +89,7 @@ void Widget::drawCannon()
         modelview.rotate((90 - world->getCannonAngle()), cos(world->getViewAngle()), 0, sin(world->getViewAngle()));
         modelview.scale(0.5, 2, 0.5);
         modelview.translate(0, 0.5, 0);
-        drawCylinder();
+        drawCylinder(black);
     pop();
 }
 
@@ -118,7 +119,8 @@ void Widget::drawProjectiles()
         p->getOpenGLMatrix(projectileMatrix);
         push();
             modelview = modelview * QMatrix4x4((GLfloat*)projectileMatrix).transposed();
-            drawSphere();
+            modelview.scale(p->getRadius()*2);
+            drawSphere(p->getColor());
         pop();
 
         delete projectileMatrix;
@@ -128,9 +130,9 @@ void Widget::drawProjectiles()
 void Widget::drawGround()
 {
     push();
-        modelview.scale(1000.0, 0.0001, 1000.0);
+        modelview.scale(1000.0, 0.01, 1000.0);
         modelview.rotate(90, 1.0, 0.0, 0.0);
-        drawSquare(world->getGroundColor());
+        drawCube(world->getGroundColor());
     pop();
 }
 
