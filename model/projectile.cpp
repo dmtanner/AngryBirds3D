@@ -9,11 +9,13 @@ Projectile::Projectile(){
     projectileLocY = 0;
     projectileLocZ = 0;
 
+    color = QVector3D(1.0, 0.0, 0.0);
+
     initializeBullet();
 
 }
 
-Projectile::Projectile(float mass, float radius, btVector3 initLoc)
+Projectile::Projectile(float mass, float radius, btVector3 initLoc, QVector3D color)
 {
     projectileMass = mass;
     projectileRadius = radius;
@@ -22,17 +24,17 @@ Projectile::Projectile(float mass, float radius, btVector3 initLoc)
     projectileLocY = initLoc.getY();
     projectileLocZ = initLoc.getZ();
 
+    this->color = color;
+
     initializeBullet();
 
 }
 
 Projectile::~Projectile()
 {
-//    delete projectileRigidBody->getMotionState();
     delete projectileMotionState;
     delete projectileRigidBody;
     delete projectileShape;
-
 }
 
 void Projectile::initializeBullet()
@@ -57,6 +59,16 @@ void Projectile::initializeBullet()
 btRigidBody *Projectile::getRigidBody()
 {
     return projectileRigidBody;
+}
+
+QVector3D Projectile::getColor()
+{
+    return color;
+}
+
+float Projectile::getRadius()
+{
+    return projectileRadius;
 }
 
 void Projectile::getOpenGLMatrix(btScalar *m)

@@ -90,13 +90,13 @@ private:
     //2D primitives
     void drawTriangle();
     void drawCircle();
-    void drawSquare(QVector3D color);
+    void drawSquare();
 
     //3D primitives
     void drawCube(QVector3D color);
-    void drawCone();
-    void drawCylinder();
-    void drawSphere();
+    void drawCone(QVector3D color);
+    void drawCylinder(QVector3D color);
+    void drawSphere(QVector3D color);
 
 
     /*-------Initialiazation of OpenGL Buffers-------*/

@@ -12,9 +12,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->setupUi(this);
     ui->widget->addWorld(world);
+    ui->cannonPowerSlider->setValue(70);
     startTimer(20);
-
-
 }
 
 MainWindow::~MainWindow()
@@ -45,6 +44,12 @@ void MainWindow::keyPressEvent(QKeyEvent *e)
                 //world->shoot();
             }
             spacePressed = true;
+            break;
+        case Qt::Key_Comma: //left angle bracket
+            ui->cannonPowerSlider->setValue(ui->cannonPowerSlider->value() - 1);
+            break;
+        case Qt::Key_Period: //left angle bracket
+            ui->cannonPowerSlider->setValue(ui->cannonPowerSlider->value() + 1);
             break;
         case Qt::Key_Escape:
             exit(0);
@@ -88,7 +93,8 @@ void MainWindow::timerEvent(QTimerEvent *)
     std::stringstream score;
     score << "Score: " << world->getScore();
     QString qscore = QString::fromStdString(score.str());
-    ui->scoreLabel->setText(qscore);
+
+    ui->scoreLCD->display(world->getScore());
 
     //shoot
     if(spacePressed && shootTimer > 15) {
@@ -101,4 +107,9 @@ void MainWindow::timerEvent(QTimerEvent *)
     world->step();
     ui->widget->updateGL();
 
+}
+
+void MainWindow::on_cannonPowerSlider_valueChanged(int value)
+{
+    world->setCannonPower(value);
 }

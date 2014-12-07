@@ -33,6 +33,7 @@ public:
     QVector3D getGroundColor();
 
     void shoot();
+    void setCannonPower(int power);
 
     void toggleLeft();
     void toggleRight();
@@ -67,12 +68,15 @@ private:
     float gravity;
     float cannonBallRadius;
     float cannonAngle;
+    float cannonPower;
     float viewAngle;
     float turnSpeed;
 
     btVector3 viewLocation = btVector3(0, 5, 0);    //unused yet
 
     QVector3D groundColor = QVector3D(0.2, 0.7, 0.1);
+
+    int calculateScore();
 
 
     /*--------------user input control------------*/

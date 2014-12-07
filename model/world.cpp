@@ -6,8 +6,9 @@ World::World() {
     hp = 100;
     cannonBallRadius = 2.5;
     cannonAngle = 45;
+    cannonPower = 70;
     viewAngle = 0;
-    turnSpeed = 3.5;
+    turnSpeed = 2;
 
     leftPress = false;
     rightPress = false;
@@ -77,6 +78,11 @@ void World::initializeBullet()
 
 }
 
+int World::calculateScore()
+{
+
+}
+
 void World::step()
 {
     dynamicsWorld->stepSimulation(time_step, max_sub_steps, fixed_time_step);
@@ -120,8 +126,8 @@ void World::incrementCannonAngle(float increment)
     //make sure cannon is pointed within range
     if(cannonAngle > 55)
         cannonAngle = 55;
-    if(cannonAngle < 0)
-        cannonAngle = 0;
+    if(cannonAngle < 5)
+        cannonAngle = 5;
 }
 
 float World::getCannonAngle()
@@ -147,7 +153,8 @@ QVector3D World::getGroundColor()
 void World::shoot()
 {
     float mass = 3;
-    float radius = 0.5;
+    float radius = 0.3;
+    QVector3D color = QVector3D(0.0, 0.0, 0.0);
 
     //coordinates at end of cannon - similar to sphere coordinates algorithm
     float x = cos(viewAngle) * cos(cannonAngle*PI/180);
@@ -155,13 +162,13 @@ void World::shoot()
     float y = sin(cannonAngle*PI/180);
 
     btVector3 initLoc(x, y, z);
-    initLoc = 2.2 * initLoc;
-    Projectile* p = new Projectile(mass, radius, initLoc);
+    initLoc = (2 - radius) * initLoc;
+    Projectile* p = new Projectile(mass, radius, initLoc, color);
 
     dynamicsWorld->addRigidBody(p->getRigidBody());
     projectiles.push_back(p);
 
-    p->applyImpulse(50*x, 50*y, 50*z);
+    p->applyImpulse(cannonPower*x, cannonPower*y, cannonPower*z);
 
     //limit number of projectiles
     if(projectiles.size() > MAX_PROJECTILES) {
@@ -169,6 +176,11 @@ void World::shoot()
         dynamicsWorld->removeRigidBody(projectiles.front()->getRigidBody());
         projectiles.erase(projectiles.begin());
     }
+}
+
+void World::setCannonPower(int power)
+{
+    cannonPower = power;
 }
 
 void World::toggleLeft()
@@ -219,7 +231,7 @@ void World::createTargets()
         for(int j = 0; j < 5; j++) {
             btVector3 initLoc2(x, j + 1.5, z);
             Target* t2 = new Target(tMass, dimensions, initLoc2);
-            t2->getRigidBody()->setRestitution(btScalar(1.1));
+            t2->getRigidBody()->setRestitution(btScalar(1.05));
             t2->getRigidBody()->setFriction(btScalar(1.0));
             dynamicsWorld->addRigidBody(t2->getRigidBody());
             targets.push_back(t2);
