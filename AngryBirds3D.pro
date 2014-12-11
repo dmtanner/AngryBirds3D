@@ -18,13 +18,15 @@ SOURCES += main.cpp\
     model/projectile.cpp \
     model/target.cpp \
     model/world.cpp \
-    widgetinit.cpp
+    widgetinit.cpp \
+    model/enemy.cpp
 
 HEADERS  += mainwindow.h \
     widget.h \
     model/projectile.h \
     model/target.h \
-    model/world.h
+    model/world.h \
+    model/enemy.h
 
 INCLUDEPATH += /home/marcos/QTworkspace/Bullet/bullet-2.80-rev2531/src
 LIBS += -L/home/marcos/QTworkspace/Bullet/bullet-2.80-rev2531/lib  \
