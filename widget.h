@@ -49,6 +49,7 @@ private:
     void drawTargets();
     void drawProjectiles();
     void drawGround();
+    void drawEnemies();
     float randomNum(int lowerBound, int upperBound);
 
 

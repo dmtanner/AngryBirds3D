@@ -9,11 +9,30 @@ Widget::Widget(QWidget *parent) :
 Widget::~Widget()
 {
     // be sure to delete all buffers from the GPU
-    GLuint bufferNames[3];
+    GLuint bufferNames[16];
+
     bufferNames[0] = colorBuffer;
     bufferNames[1] = positionBuffer;
     bufferNames[2] = normBuffer;
-    glDeleteBuffers(3, bufferNames);
+
+    bufferNames[3] = circlePositionBuffer;
+    bufferNames[4] = circleColorBuffer;
+    bufferNames[5] = circleNormBuffer;
+
+    bufferNames[6] = conePositionBuffer;
+    bufferNames[7] = coneColorBuffer;
+    bufferNames[8] = coneNormBuffer;
+
+    bufferNames[9] = cylinderPositionBuffer;
+    bufferNames[10] = cylinderColorBuffer;
+    bufferNames[11] = cylinderNormBuffer;
+
+    bufferNames[12] = spherePositionBuffer;
+    bufferNames[13] = sphereColorBuffer;
+    bufferNames[14] = sphereNormBuffer;
+    bufferNames[15] = sphereIndexBuffer;
+
+    glDeleteBuffers(16, bufferNames);
 }
 
 void Widget::initializeGL()
@@ -48,6 +67,7 @@ void Widget::paintGL()
         drawGround();
         drawCannon();
         drawTargets();
+        drawEnemies();
         drawProjectiles();
     pop();
 }
@@ -102,6 +122,7 @@ void Widget::drawTargets()
         t->getOpenGLMatrix(targetMatrix);
         push();
             modelview = modelview * QMatrix4x4((GLfloat*)targetMatrix).transposed();
+            modelview.scale(2*t->getScaleX(), 2*t->getScaleY(), 2*t->getScaleZ());
             drawCube(t->getColor());
         pop();
 
@@ -133,7 +154,24 @@ void Widget::drawGround()
         modelview.scale(1000.0, 0.01, 1000.0);
         modelview.rotate(90, 1.0, 0.0, 0.0);
         drawCube(world->getGroundColor());
-    pop();
+        pop();
+}
+
+void Widget::drawEnemies()
+{
+    std::vector<Enemy*> enemies = world->getEnemies();
+    for(std::vector<Enemy*>::iterator it = enemies.begin(); it != enemies.end(); it++) {
+        Enemy* e = *it;
+        btScalar* enemyMatrix = new btScalar[16];
+        e->getOpenGLMatrix(enemyMatrix);
+        push();
+            modelview = modelview * QMatrix4x4((GLfloat*)enemyMatrix).transposed();
+            modelview.scale(e->getRadius()*2);
+            drawSphere(e->getColor());
+        pop();
+
+        delete enemyMatrix;
+    }
 }
 
 

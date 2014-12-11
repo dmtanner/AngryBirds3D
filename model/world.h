@@ -8,6 +8,7 @@
 #include <iostream>
 #include "target.h"
 #include "projectile.h"
+#include "enemy.h"
 #include <sstream>
 #include <cstdlib>
 
@@ -25,6 +26,7 @@ public:
 
     std::vector<Target *> getTargets();
     std::vector<Projectile *> getProjectiles();
+    std::vector<Enemy *> getEnemies();
 
     void incrementCannonAngle(float increment);
     float getCannonAngle();
@@ -64,6 +66,7 @@ private:
 
     /*-------------non-bullet things-------*/
     int score;
+    int maxScore;
     float hp;
     float gravity;
     float cannonBallRadius;
@@ -76,7 +79,11 @@ private:
 
     QVector3D groundColor = QVector3D(0.2, 0.7, 0.1);
 
-    int calculateScore();
+    void calculateScore();
+
+    void setMaxScore();
+
+    const int MAX_SCORE = 1000;
 
 
     /*--------------user input control------------*/
@@ -87,14 +94,15 @@ private:
 
     std::vector<Target*> targets;
     std::vector<Projectile*> projectiles;
+    std::vector<Enemy*> enemies;
 
 
-    static const int targetCount = 30;
+    static const int targetCount = 20;
     static const int MAX_PROJECTILES = 100;
 
 
     void createTargets();
-
+    void createPillar(btVector3 location);
 };
 
 #endif // WORLD_H

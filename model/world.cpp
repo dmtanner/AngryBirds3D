@@ -22,6 +22,8 @@ World::World() {
     initializeBullet();
 
     createTargets();
+
+    setMaxScore();
 }
 
 World::~World()
@@ -78,16 +80,34 @@ void World::initializeBullet()
 
 }
 
-int World::calculateScore()
+void World::calculateScore()
 {
+    //sum up heights for score
+    score = 0;
+    for(std::vector<Enemy*>::iterator it = enemies.begin(); it != enemies.end(); it++) {
+        int height = (*it)->getRigidBody()->getWorldTransform().getOrigin().getY();
+        score += height;
+    }
 
+    score = maxScore - score;
+
+    score = (score/(float)maxScore)*MAX_SCORE;
+}
+
+void World::setMaxScore()
+{
+    maxScore = 0;
+    for(std::vector<Enemy*>::iterator it = enemies.begin(); it != enemies.end(); it++) {
+        int height = (*it)->getRigidBody()->getWorldTransform().getOrigin().getY();
+        maxScore += height;
+    }
 }
 
 void World::step()
 {
     dynamicsWorld->stepSimulation(time_step, max_sub_steps, fixed_time_step);
 
-    score += 1;
+    calculateScore();
 
     if(leftPress) {
         incrementViewAngle(-0.01*turnSpeed);
@@ -117,6 +137,11 @@ std::vector<Target *> World::getTargets()
 std::vector<Projectile *> World::getProjectiles()
 {
     return projectiles;
+}
+
+std::vector<Enemy *> World::getEnemies()
+{
+    return enemies;
 }
 
 void World::incrementCannonAngle(float increment)
@@ -205,9 +230,9 @@ void World::toggleDown()
 
 void World::createTargets()
 {
-    //create on 20x20 grid
-    int upperBound = 10;
-    int lowerBound = -10;
+    //create targets on a bounded grid
+    int upperBound = 50;
+    int lowerBound = -50;
     int range = upperBound - lowerBound;
 
     for(int i = 0; i < targetCount; i++) {
@@ -215,28 +240,73 @@ void World::createTargets()
         float x = (((float)rand() / RAND_MAX) * range) + lowerBound;
         float z = (((float)rand() / RAND_MAX) * range) + lowerBound;
 
-        x = targetCount*cos(2*3.14159*i/targetCount);
-        z = targetCount*sin(2*3.14159*i/targetCount);
+        //protect viewer from too-close targets
+        if(x < 5 && x > -5)
+            x += 10*((float)rand()/RAND_MAX);
+        if(z < 5 && z > -5)
+            z += 10*(float)rand()/RAND_MAX;
 
-        float tMass = 3;
-        btVector3 dimensions(0.5, 0.5, 0.5);
-        btVector3 initLoc(x, 0.5, z);
-        Target* t = new Target(tMass, dimensions, initLoc);
+        /*-------used for an ordered, circular placement------*/
+        //x = targetCount*cos(2*3.14159*i/targetCount);
+        //z = targetCount*sin(2*3.14159*i/targetCount);
 
-        //add to world
-        dynamicsWorld->addRigidBody(t->getRigidBody());
-        targets.push_back(t);
-
-        //add one on top
-        for(int j = 0; j < 5; j++) {
-            btVector3 initLoc2(x, j + 1.5, z);
-            Target* t2 = new Target(tMass, dimensions, initLoc2);
-            t2->getRigidBody()->setRestitution(btScalar(1.05));
-            t2->getRigidBody()->setFriction(btScalar(1.0));
-            dynamicsWorld->addRigidBody(t2->getRigidBody());
-            targets.push_back(t2);
-        }
+        createPillar(btVector3(x,0.0,z));
     }
+
+}
+
+void World::createPillar(btVector3 location)
+{
+    //bottom
+    float mass = 3;
+    btVector3 bottomDim(0.5, 1.5, 0.5);
+    location.setY(location.getY() + bottomDim.getY());
+    Target* bottom = new Target(mass, bottomDim, location);
+    dynamicsWorld->addRigidBody(bottom->getRigidBody());
+    targets.push_back(bottom);
+
+    //middle
+    btVector3 middleDim(1.5, 0.5, 1.5);
+    location.setY(location.getY()*2 + middleDim.getY());
+    Target* middle = new Target(mass, middleDim, location);
+    dynamicsWorld->addRigidBody(middle->getRigidBody());
+    targets.push_back(middle);
+
+    //side1
+    btVector3 sideDim(0.5, 1.0, 0.5);
+    btVector3 location1 = location;
+    location1.setY(location1.getY() + middleDim.getY() + sideDim.getY());
+    location1.setX(location1.getX() + middleDim.getX()/2);
+    location1.setZ(location1.getZ() + middleDim.getZ()/2);
+    Target* side1 = new Target(mass, sideDim, location1);
+    dynamicsWorld->addRigidBody(side1->getRigidBody());
+    targets.push_back(side1);
+
+    //side2
+    btVector3 location2 = location;
+    location2.setY(location2.getY() + middleDim.getY() + sideDim.getY());
+    location2.setX(location2.getX() - middleDim.getX()/2);
+    location2.setZ(location2.getZ() - middleDim.getZ()/2);
+    Target* side2 = new Target(mass, sideDim, location2);
+    dynamicsWorld->addRigidBody(side2->getRigidBody());
+    targets.push_back(side2);
+
+    location.setY(location1.getY());
+
+    //top
+    btVector3 topDim(1.5, 1.5, 1.5);
+    location.setY(location.getY() + sideDim.getY() + topDim.getY());
+    Target* top = new Target(mass, topDim, location);
+    dynamicsWorld->addRigidBody(top->getRigidBody());
+    targets.push_back(top);
+
+    //enemy on top
+    float enemyDim = 0.5;
+    location.setY(location.getY() + topDim.getY() + enemyDim);
+    QVector3D color = QVector3D(0, 100, 150);
+    Enemy* e = new Enemy(mass, enemyDim, location, color);
+    dynamicsWorld->addRigidBody(e->getRigidBody());
+    enemies.push_back(e);
 
 }
 

@@ -74,6 +74,21 @@ void Target::getOpenGLMatrix(btScalar *m)
     trans.getOpenGLMatrix(m);
 }
 
+float Target::getScaleX()
+{
+    return targetDimX;
+}
+
+float Target::getScaleY()
+{
+    return targetDimY;
+}
+
+float Target::getScaleZ()
+{
+    return targetDimZ;
+}
+
 QVector3D Target::getColor()
 {
     return color;

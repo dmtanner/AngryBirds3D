@@ -16,6 +16,9 @@ public:
     void initializeBullet();
     btRigidBody* getRigidBody();
     void getOpenGLMatrix(btScalar *m);
+    float getScaleX();
+    float getScaleY();
+    float getScaleZ();
 
     QVector3D getColor();
 
