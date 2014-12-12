@@ -12,7 +12,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->setupUi(this);
     ui->widget->addWorld(world);
-    ui->cannonPowerSlider->setValue(70);
+    ui->cannonPowerSlider->setValue(ui->cannonPowerSlider->value());
     startTimer(20);
 }
 
