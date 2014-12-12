@@ -62,7 +62,7 @@ void Widget::paintGL()
         //change view with user input
         float xdir = cos(world->getViewAngle());
         float zdir = sin(world->getViewAngle());
-        modelview.lookAt(QVector3D(0, 1.7, 0), QVector3D(xdir, 1.7, zdir), QVector3D(0, 1, 0));
+        modelview.lookAt(QVector3D(0, 1.5, 0), QVector3D(xdir, 2.0, zdir), QVector3D(0, 1, 0));
 
         drawGround();
         drawCannon();

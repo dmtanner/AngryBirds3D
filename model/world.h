@@ -97,12 +97,15 @@ private:
     std::vector<Enemy*> enemies;
 
 
-    static const int targetCount = 20;
+    static const int targetCount = 30;
     static const int MAX_PROJECTILES = 100;
 
 
     void createTargets();
     void createPillar(btVector3 location);
+    void createRandomPillar(btVector3 location);
+    float randf(int max);
+
 };
 
 #endif // WORLD_H
